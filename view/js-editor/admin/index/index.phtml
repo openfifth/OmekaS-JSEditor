@@ -1,0 +1,52 @@
+<?php
+$this->headLink()->appendStylesheet($this->assetUrl('css/jseditor.css', 'JSEditor'));
+$this->headScript()->appendFile($this->assetUrl('js/jseditor.js', 'JSEditor'));
+echo $this->pageTitle($this->translate('JS Editor'));
+?>
+
+<?php echo $this->form()->openTag($form); ?>
+
+<div id="page-actions">
+  <button type="submit"><?php echo $this->translate('Save'); ?></button>
+</div>
+
+<div class="field">
+    <div class="field-meta">
+        <label for="js"><?php echo $this->translate('JS'); ?></label>
+    </div>
+    <div class="inputs">
+        <textarea rows="20" name="js" id="js"><?php echo (isset($js)) ? $js : ''; ?></textarea>
+    </div>
+</div>
+
+<div class="field external-js">
+    <div class="field-meta">
+          <label id="external-js-label"><?php echo $this->translate('External scripts'); ?></label>
+    </div>
+    <div class="inputs">
+        <div class="values">
+            <?php if (isset($externalJs) && (!empty($externalJs))): ?>
+                <?php
+                $externalJsFieldCount = 0;
+                $externalJsValue = '';
+                ?>
+                <?php foreach ($externalJs as $uri): ?>
+                <?php $externalJsValue = $uri; ?>
+                <?php echo $this->partial('js-editor/external-js', [
+                    'externalJsValue' => $externalJsValue,
+                    'externalJsFieldCount' => $externalJsFieldCount,
+                ]); ?>
+                <?php $externalJsFieldCount++; ?>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <?php echo $this->partial('js-editor/external-js', [
+                    'externalJsValue' => '',
+                    'externalJsFieldCount' => 0,
+                ]); ?>
+            <?php endif; ?>
+        </div>
+        <button type="button" class="add-value o-icon-add"><?php echo $this->translate('Add another script'); ?></button>
+    </div>
+</div>
+
+<?php echo $this->form()->closeTag($form); ?>
